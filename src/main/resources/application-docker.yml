@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: docker
+  flyway:
+    url: jdbc:mysql://mysqldb/game?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    user: root
+    password: root
+  datasource:
+    url: jdbc:mysql://mysqldb/game?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root

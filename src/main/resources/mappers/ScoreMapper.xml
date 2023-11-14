@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.game.mappers.ScoreMapper">
+
+    <resultMap id="gameWiseMap" type="com.game.dto.Scores">
+        <result property="game" column="game" />
+        <result property="user" column="user" />
+        <result property="score" column="score" />
+        <result property="date" column="date" />
+    </resultMap>
+
+    <select id="getScoreBoardForGame" parameterType="java.util.Map" resultMap="gameWiseMap">
+        SELECT
+            game.game_name as game,
+            user.user_name as user,
+            sb.score as score,
+            sb.creation_date as date
+        FROM score_board sb, users user, games game
+        WHERE sb.game_id = game.game_id
+        AND sb.user_id = user.user_id
+        <if test="userId != null">
+            AND user.user_id = #{userId}
+        </if>
+        <if test="gameId != null">
+            AND game.game_id = #{gameId}
+        </if>
+        <if test="filter.booleanValue()">
+            AND sb.score_id in (
+            select score_id from score_board sb,
+            (select
+            max(score) as score,
+            user_id, game_id
+            from score_board
+            group by user_id, game_id) as temp
+            where sb.game_id = temp.game_id
+            and sb.user_id = temp. user_id
+            and sb.score = temp.score)
+        </if>
+        ORDER BY sb.creation_date desc
+    </select>
+
+</mapper>

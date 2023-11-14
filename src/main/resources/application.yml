@@ -1,0 +1,50 @@
+server:
+  port: 8087
+  servlet:
+    contextPath: /game
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: game-service
+  tomcat:
+    accesslog:
+      directory: /data/logs/
+      prefix: access_log_journey-manager
+      file-date-format: .yyyy_MM_dd
+      rename-on-rotate: true
+      rotate: true
+      enabled: true
+      pattern: '%A %h "%{uniqueTracking}i" %t "%r" "%{Referer}i" "%{User-Agent}i" %b %s %D'
+  flyway:
+    validate-on-migrate: true
+    sql-migration-prefix: V
+    sql-migration-suffixes: .sql
+    sql-migration-separator: _
+    enabled: true
+    url: jdbc:mysql://localhost:3307/game?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    user: root
+    password: root
+    baseline-version: 1
+    baseline-on-migrate: true
+    fail-on-missing-locations: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+      use-new-id-generator-mappings: true
+  datasource:
+    url: jdbc:mysql://localhost:3307/game?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+
+mybatis:
+  mapper-locations: classpath:./mappers/*.xml
+  type-aliases-package: com.game.dto
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+ranking:
+  board:
+    limit: 5
+    headers: game_id, user_id, score
