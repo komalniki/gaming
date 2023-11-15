@@ -30,7 +30,7 @@ public class CSVUtils {
 
     public static List<ScoreRequest> csvToModel(InputStream is, String[] headers) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-             CSVParser csvParser = CSVFormat.RFC4180.builder().setHeader(headers).setSkipHeaderRecord(true).build().parse(fileReader)) {
+             CSVParser csvParser = CSVFormat.DEFAULT.builder().setHeader(headers).setSkipHeaderRecord(true).build().parse(fileReader)) {
             List<ScoreRequest> scoreRequestList = new ArrayList<>();
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
             for (CSVRecord csvRecord : csvRecords) {
