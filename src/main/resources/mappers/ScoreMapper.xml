@@ -11,32 +11,41 @@
 
     <select id="getScoreBoardForGame" parameterType="java.util.Map" resultMap="gameWiseMap">
         SELECT
-            game.game_name as game,
             user.user_name as user,
-            sb.score as score,
-            sb.creation_date as date
-        FROM score_board sb, users user, games game
-        WHERE sb.game_id = game.game_id
-        AND sb.user_id = user.user_id
-        <if test="userId != null">
-            AND user.user_id = #{userId}
+            game.game_name as game,
+            inner_query.score as score
+        <if test = "filter.booleanValue()">
+            ,inner_query.date as date
         </if>
-        <if test="gameId != null">
-            AND game.game_id = #{gameId}
-        </if>
-        <if test="filter.booleanValue()">
-            AND sb.score_id in (
-            select score_id from score_board sb,
+        FROM users as user, games as game,
             (select
-            max(score) as score,
-            user_id, game_id
-            from score_board
-            group by user_id, game_id) as temp
-            where sb.game_id = temp.game_id
-            and sb.user_id = temp. user_id
-            and sb.score = temp.score)
+                max(score) as score,
+                user_id,
+                game_id
+            <if test = "filter.booleanValue()">
+                ,CAST(creation_date AS DATE) date
+            </if>
+            FROM score_board
+            WHERE active = true
+            GROUP BY user_id, game_id
+            <if test = "filter.booleanValue()">
+            , date
+            </if>
+            ) as inner_query
+            WHERE inner_query.game_id = game.game_id
+            AND inner_query.user_id = user.user_id
+            AND game.active = true
+            AND user.active = true
+            <if test="userId != null">
+                AND user.user_id = #{userId}
+            </if>
+            <if test="gameId != null">
+                AND game.game_id = #{gameId}
+            </if>
+        ORDER BY score desc
+        <if test = "filter.booleanValue()">
+            ,date desc
         </if>
-        ORDER BY sb.creation_date desc
     </select>
 
 </mapper>

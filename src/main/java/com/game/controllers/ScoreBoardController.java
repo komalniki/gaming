@@ -53,13 +53,15 @@ public class ScoreBoardController {
     }
 
     @GetMapping(value = "/ranking/board")
-    public ResponseEntity<Response<Object>> getRankingBoard() {
-        return new ResponseEntity<>(Response.successResponse(this.scoreService.fetchRankingBoardForAllGames()), HttpStatus.CREATED);
+    public ResponseEntity<Response<Object>> getRankingBoard(@RequestParam(value = "filter", defaultValue = "true") boolean filter) {
+        log.info("Request received to Get Ranking Board with filter: {}", filter);
+        return new ResponseEntity<>(Response.successResponse(this.scoreService.fetchRankingBoardForAllGames(filter)), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/ranking/board/game")
-    public ResponseEntity<Response<Object>> getRankingBoardForGame(@RequestParam(value = "gameId") Integer gameId) {
-        return new ResponseEntity<>(Response.successResponse(this.scoreService.fetchRankingBoardByGameId(gameId)), HttpStatus.CREATED);
+    public ResponseEntity<Response<Object>> getRankingBoardForGame(@RequestParam(value = "gameId") Integer gameId, @RequestParam(value = "filter", defaultValue = "true") boolean filter) {
+        log.info("Request received to Get Ranking Board For Game: {}, filter: {}", gameId, filter);
+        return new ResponseEntity<>(Response.successResponse(this.scoreService.fetchRankingBoardByGameId(gameId, filter)), HttpStatus.CREATED);
     }
 
     @PostMapping("/upload")

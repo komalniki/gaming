@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -96,7 +96,7 @@ public class ScoreServiceImplTest {
         map.put("filter", true);
         List<Scores> scoresList = Arrays.asList(scores1, scores2, scores3);
         Mockito.when(this.scoreMapper.getScoreBoardForGame(map)).thenReturn(scoresList);
-        Assert.assertEquals(2, this.scoreService.fetchRankingBoardForAllGames().size());
+        Assert.assertEquals(2, this.scoreService.fetchRankingBoardForAllGames(true).size());
     }
 
     @Test
@@ -109,7 +109,7 @@ public class ScoreServiceImplTest {
         List<Scores> scoresList = Arrays.asList(scores1, scores2);
         Mockito.when(this.gameProperties.getLimit()).thenReturn(5);
         Mockito.when(this.scoreMapper.getScoreBoardForGame(map)).thenReturn(scoresList);
-        Map<String, List<GameWiseScore>> response = this.scoreService.fetchRankingBoardByGameId(1001);
+        Map<String, List<GameWiseScore>> response = this.scoreService.fetchRankingBoardByGameId(1001, true);
         Assert.assertEquals(1, response.size());
         Assert.assertEquals(2, response.get("Game1").size());
     }
@@ -119,7 +119,7 @@ public class ScoreServiceImplTest {
         scores.setScore(score);
         scores.setGame(game);
         scores.setUser(user);
-        scores.setDate(new Timestamp(System.currentTimeMillis()));
+        scores.setDate(new Date(System.currentTimeMillis()));
         return scores;
     }
 }

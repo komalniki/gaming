@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.game.utils.CommonUtils;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -16,7 +16,7 @@ public class GameWiseScore {
 
     private double score;
 
-    private Timestamp date;
+    private Date date;
 
     @Override
     public String toString() {

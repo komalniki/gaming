@@ -25,7 +25,7 @@ public class Advice {
     @ResponseBody
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Response<Object>> handleException(Exception ex) {
-        log.error("Exception Occurred: {}", ex.getMessage());
+        log.error("Exception Occurred: {}", ex);
         return new ResponseEntity<>(Response.failureResponse(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

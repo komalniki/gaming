@@ -32,16 +32,20 @@ public class CSVServiceImpl implements CSVService {
         try {
             if (CSVUtils.hasCSVFormat(file)) {
                 for (ScoreRequest scoreRequest : CSVUtils.csvToModel(file.getInputStream(), this.gameProperties.getHeaders())) {
-                    try {
-                        this.commonService.publishScore(scoreRequest);
-                    } catch (ApplicationException e) {
-                        log.error("Error occurred for Score Request: {}", scoreRequest);
-                    }
+                    this.saveScore(scoreRequest);
                 }
             }
         } catch (IOException e) {
             log.error("Exception Occurred:", e);
             throw new ApplicationException("Failed to Process Data: " + e.getMessage());
+        }
+    }
+
+    private void saveScore(ScoreRequest scoreRequest) {
+        try {
+            this.commonService.publishScore(scoreRequest);
+        } catch (ApplicationException e) {
+            log.error("Error occurred for Score Request: {}", scoreRequest, e);
         }
     }
 }

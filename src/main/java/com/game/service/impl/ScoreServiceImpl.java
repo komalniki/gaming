@@ -85,13 +85,13 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
-    public Map<String, List<GameWiseScore>> fetchRankingBoardForAllGames() {
-        return ScoreBoardUtils.getRankingForGames(this.getAllScores(null, null, true), this.gameProperties.getLimit());
+    public Map<String, List<GameWiseScore>> fetchRankingBoardForAllGames(boolean filter) {
+        return ScoreBoardUtils.getRankingForGames(this.getAllScores(null, null, filter), this.gameProperties.getLimit());
     }
 
     @Override
-    public Map<String, List<GameWiseScore>> fetchRankingBoardByGameId(Integer gameId) {
-        return ScoreBoardUtils.getRankingForGames(this.getAllScores(null, gameId, true), this.gameProperties.getLimit());
+    public Map<String, List<GameWiseScore>> fetchRankingBoardByGameId(Integer gameId, boolean filter) {
+        return ScoreBoardUtils.getRankingForGames(this.getAllScores(null, gameId, filter), this.gameProperties.getLimit());
 
     }
 

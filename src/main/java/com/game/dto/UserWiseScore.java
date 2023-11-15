@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.game.utils.CommonUtils;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserWiseScore {
@@ -16,7 +18,7 @@ public class UserWiseScore {
 
     private double score;
 
-    private Timestamp date;
+    private Date date;
 
     @Override
     public String toString() {
